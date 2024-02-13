@@ -1,7 +1,6 @@
 import os
 from selenium.webdriver import Keys
 from selene import browser, be, have
-from qa_guru_python_10.data.users import Users
 from pathlib import Path
 
 
@@ -10,44 +9,62 @@ class RegistrationPage:
     def open(self):
         browser.open("/")
 
-    def registration_form_page(self, user: Users):
+    def fill_first_name(self, first_name):
+        browser.element('#firstName').should(be.visible).type(first_name)
 
-        browser.element('#firstName').should(be.visible).type(user.first_name)
-        browser.element('#lastName').type(user.last_name)
-        browser.element('#userEmail').type(user.email)
+    def fill_last_name(self, last_name):
+        browser.element('#lastName').should(be.visible).type(last_name)
+
+    def fill_email(self, email):
+        browser.element('#userEmail').should(be.visible).type(email)
+
+    def fill_gender(self, gender):
         browser.all('[for^=gender-radio]').element_by(
-            have.exact_text(user.gender)).click()
+            have.exact_text(gender)).click()
 
-        browser.element("#userNumber").type(user.phone)
-        browser.element('#dateOfBirthInput').click()
-        browser.element('.react-datepicker__month-select').send_keys(user.moth)
-        browser.element('.react-datepicker__year-select').send_keys(user.year)
-        browser.element(
-            f'.react-datepicker__day.react-datepicker__day--0{user.day}'
-        ).click()
+    def fill_phone(self, phone):
+        browser.element('#userNumber').should(be.visible).type(phone)
 
-        browser.element('#subjectsInput').type(user.subjects).press_enter()
+    def fill_date_of_birth(self, day, month, year):
+        browser.element("#dateOfBirthInput").click()
+        browser.element(".react-datepicker__year-select").send_keys(year)
+        browser.element(".react-datepicker__month-select").send_keys(month)
+        browser.element(f".react-datepicker__day--0{day}").click()
+
+    def fill_subjects(self, subjects):
+        browser.element('#subjectsInput').type(subjects).press_enter()
+
+    def fill_hobbies(self, hobbies):
         browser.all('[for^=hobbies-checkbox]').element_by(
-            have.exact_text(user.hobbies)).click()
+            have.exact_text(hobbies)).click()
 
-        browser.element('#uploadPicture').send_keys(
-            os.path.abspath(F'resources/{user.photo}'))
+    def attach_photo(self, photo):
+        browser.element('#uploadPicture').should(be.visible).set_value(
+            os.path.abspath(F'resources/{photo}'))
 
-        browser.element("#currentAddress").type(user.current_address)
+    def fill_current_address(self, current_address):
+        browser.element('#currentAddress').should(
+            be.visible).type(current_address)
+
+    def fill_state(self, state):
         browser.element('#state').click()
         browser.all('[id^=react-select][id*=option]').element_by(
-            have.exact_text(user.state)).click()
+            have.exact_text(state)).click()
+
+    def fill_city(self, city):
         browser.element('#city').click()
         browser.all('[id^=react-select][id*=option]').element_by(
-            have.exact_text(user.city)).click()
+            have.exact_text(city)).click()
 
+    def sumbit(self):
         browser.element('#submit').should(be.clickable).press_enter()
 
-    def should_registration_form(self, user: Users):
+    def should_registration_form(self, first_name, last_name, email, gender,
+                                 phone, date_of_birth, subjects, hobbies,
+                                 photo, current_address, state, city):
         browser.element('#example-modal-sizes-title-lg').should(
             have.exact_text('Thanks for submitting the form'))
         browser.element('.table').all('td').even.should(
-            have.texts(f'{user.first_name} {user.last_name}', {user.email},
-                       {user.gender}, {user.phone}, {user.date_of_birth},
-                       {user.subjects}, {user.hobbies}, {user.photo},
-                       {user.current_address}, f'{user.state} {user.city}'))
+            have.texts(f'{first_name} {last_name}', {email}, {gender}, {phone},
+                       {date_of_birth}, {subjects}, {hobbies}, {photo},
+                       {current_address}, f'{state} {city}'))
