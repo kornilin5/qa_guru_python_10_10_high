@@ -2,6 +2,7 @@ import os
 from selenium.webdriver import Keys
 from selene import browser, be, have
 from pathlib import Path
+from qa_guru_python_10.utils import resources_path
 
 
 class RegistrationPage:
@@ -39,8 +40,8 @@ class RegistrationPage:
             have.exact_text(hobbies)).click()
 
     def attach_photo(self, photo):
-        browser.element('#uploadPicture').should(be.visible).set_value(
-            os.path.abspath(F'resources/{photo}'))
+        browser.element("#uploadPicture").send_keys(
+            resources_path.path_photo(photo))
 
     def fill_current_address(self, current_address):
         browser.element('#currentAddress').should(
