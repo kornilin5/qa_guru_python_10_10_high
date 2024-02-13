@@ -1,8 +1,7 @@
-import pytest
 import os
 from selenium.webdriver import Keys
 from selene import browser, be, have
-from qa_guru_python_10.data.users import user
+from qa_guru_python_10.data.users import Users
 from pathlib import Path
 
 
@@ -11,7 +10,7 @@ class RegistrationPage:
     def open(self):
         browser.open("/")
 
-    def registration_form_page(self):
+    def registration_form_page(self, user: Users):
 
         browser.element('#firstName').should(be.visible).type(user.first_name)
         browser.element('#lastName').type(user.last_name)
@@ -44,7 +43,7 @@ class RegistrationPage:
 
         browser.element('#submit').should(be.clickable).press_enter()
 
-    def should_registration_form(self):
+    def should_registration_form(self, user: Users):
         browser.element('#example-modal-sizes-title-lg').should(
             have.exact_text('Thanks for submitting the form'))
         browser.element('.table').all('td').even.should(
