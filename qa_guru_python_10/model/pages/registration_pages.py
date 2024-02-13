@@ -2,6 +2,7 @@ import os
 from selenium.webdriver import Keys
 from selene import browser, be, have
 from qa_guru_python_10.data.users import Users
+from qa_guru_python_10.utils import resources_path
 from pathlib import Path
 
 
@@ -30,8 +31,8 @@ class RegistrationPage:
         browser.all('[for^=hobbies-checkbox]').element_by(
             have.exact_text(user.hobbies)).click()
 
-        browser.element('#uploadPicture').send_keys(
-            os.path.abspath(F'resources/{user.photo}'))
+        browser.element("#uploadPicture").send_keys(
+            resources_path.path_photo(user.photo))
 
         browser.element("#currentAddress").type(user.current_address)
         browser.element('#state').click()
