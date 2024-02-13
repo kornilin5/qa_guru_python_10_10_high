@@ -3,7 +3,7 @@ from selenium.webdriver import Keys
 from selene import browser, be, have
 from qa_guru_python_10.data.users import Users
 from qa_guru_python_10.utils import resources_path
-from pathlib import Path
+
 
 
 class RegistrationPage:
