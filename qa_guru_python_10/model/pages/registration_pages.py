@@ -1,5 +1,3 @@
-import os
-from selenium.webdriver import Keys
 from selene import browser, be, have
 from qa_guru_python_10.utils import resources_path
 
